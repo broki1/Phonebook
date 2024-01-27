@@ -7,7 +7,7 @@ namespace Phonebook.Data;
 internal class PhonebookContext : DbContext
 {
 
-    DbSet<Contact> Contacts { get; set; }
+    internal DbSet<Contact> Contacts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

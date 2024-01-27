@@ -1,4 +1,7 @@
-﻿namespace Phonebook;
+﻿using PhoneNumbers;
+using System.Globalization;
+
+namespace Phonebook;
 
 internal class UserInput
 {
@@ -52,5 +55,32 @@ internal class UserInput
         }
 
         return email;
+    }
+
+    internal static string GetPhoneNumber()
+    {
+        Console.Clear();
+        Console.WriteLine("enter 2-letter country code ('US', 'CH', 'DE', etc.):");
+        var countryCode = Console.ReadLine().Trim().ToUpper();
+        
+        while (!ValidationEngine.ValidCountryCode(countryCode))
+        {
+            Console.WriteLine("\ninvalid input, enter 2-letter country code ('US', 'CH', 'DE', etc.):");
+            countryCode = Console.ReadLine().Trim().ToUpper();
+        }
+
+        Console.WriteLine("enter phone number:");
+        var phoneNumberInput = Console.ReadLine().Trim();
+
+        while (!ValidationEngine.ValidPhoneNumber(phoneNumberInput, countryCode))
+        {
+            Console.WriteLine("\ninvalid input, enter phone number:");
+            phoneNumberInput = Console.ReadLine().Trim();
+        }
+
+        var phoneNumberUtil = PhoneNumberUtil.GetInstance();
+        var phoneNumber = phoneNumberUtil.Parse(phoneNumberInput, countryCode);
+
+        return phoneNumberUtil.Format(phoneNumber, PhoneNumberFormat.INTERNATIONAL);
     }
 }
