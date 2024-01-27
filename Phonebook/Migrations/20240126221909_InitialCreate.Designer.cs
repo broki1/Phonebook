@@ -11,7 +11,7 @@ using Phonebook.Data;
 namespace Phonebook.Migrations
 {
     [DbContext(typeof(PhonebookContext))]
-    [Migration("20240126185950_InitialCreate")]
+    [Migration("20240126221909_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -36,7 +36,11 @@ namespace Phonebook.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
