@@ -20,6 +20,9 @@ internal class Program
                 case "1":
                     PhonebookManager.AddContact();
                     break;
+                case "2":
+                    PhonebookManager.ReadContact();
+                    break;
             }
         }
     }

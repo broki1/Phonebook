@@ -83,4 +83,14 @@ internal class UserInput
 
         return phoneNumberUtil.Format(phoneNumber, PhoneNumberFormat.INTERNATIONAL);
     }
+
+    internal static string GetReadInput()
+    {
+        Console.Clear();
+        Console.WriteLine("search contact:");
+
+        var contactInfo = Console.ReadLine().Trim();
+
+        return contactInfo;
+    }
 }

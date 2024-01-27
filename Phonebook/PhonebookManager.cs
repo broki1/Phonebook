@@ -36,4 +36,24 @@ internal class PhonebookManager
         Console.ReadKey();
     }
 
+    internal static void ReadContact()
+    {
+        var input = UserInput.GetReadInput();
+
+        var contacts = context.Contacts.Where(x => x.Name.Contains(input) ||  x.Email.Contains(input) || x.PhoneNumber.Contains(input))
+            .ToList();
+
+        if (contacts == null || contacts.Count == 0)
+        {
+            Console.WriteLine("\nno contacts found");
+        }
+        else
+        {
+            VisualizationTool.PrintContacts(contacts);
+        }
+
+        Console.WriteLine("\npress any key to continue");
+        Console.ReadKey();
+    }
+
 }
