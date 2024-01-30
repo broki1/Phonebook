@@ -98,12 +98,12 @@ internal class UserInput
 
     internal static int GetContactID()
     {
-        Console.WriteLine("\nenter ID of contact to update:");
+        Console.WriteLine("\nenter ID of contact:");
         var contactID = Console.ReadLine().Trim();
 
         while (!ValidationEngine.ValidID(contactID))
         {
-            Console.WriteLine("\ninvalid input, enter ID of contact to update:\n");
+            Console.WriteLine("\ninvalid input, enter ID of contact:\n");
             contactID = Console.ReadLine().Trim();
         }
 

@@ -73,4 +73,30 @@ internal class PhonebookManager
         Console.WriteLine("\ncontact updated\n\npress any key to continue");
         Console.ReadKey();
     }
+    internal static void DeleteContact()
+    {
+        VisualizationTool.PrintContacts(context.Contacts.ToList());
+
+        var contactID = UserInput.GetContactID();
+
+        var contact = context.Contacts.Where(x => x.Id == contactID).First();
+
+        Console.WriteLine("\nare you sure you want to delete this contact? press '1' to confirm, press '0' to cancel");
+
+        var userChoice = UserInput.GetUpdateChoice();
+
+        if (userChoice == "1")
+        {
+            context.Contacts.Remove(contact);
+            context.SaveChanges();
+            Console.WriteLine("\ncontact deleted");
+        }
+        else
+        {
+            Console.WriteLine("\ncancelled");
+        }
+
+        Console.WriteLine("\n\npress any key to continue");
+        Console.ReadKey();
+    }
 }

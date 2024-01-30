@@ -26,6 +26,12 @@ internal class Program
                 case "3":
                     PhonebookManager.UpdateContact();
                     break;
+                case "4":
+                    PhonebookManager.DeleteContact();
+                    break;
+                default:
+                    Console.WriteLine("\ninvalid input");
+                    break;
             }
         }
     }
