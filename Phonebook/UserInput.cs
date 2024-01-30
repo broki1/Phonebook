@@ -1,5 +1,7 @@
-﻿using PhoneNumbers;
+﻿using Phonebook.Model;
+using PhoneNumbers;
 using System.Globalization;
+using System.Reflection;
 
 namespace Phonebook;
 
@@ -92,5 +94,68 @@ internal class UserInput
         var contactInfo = Console.ReadLine().Trim();
 
         return contactInfo;
+    }
+
+    internal static int GetContactID()
+    {
+        Console.WriteLine("\nenter ID of contact to update:");
+        var contactID = Console.ReadLine().Trim();
+
+        while (!ValidationEngine.ValidID(contactID))
+        {
+            Console.WriteLine("\ninvalid input, enter ID of contact to update:\n");
+            contactID = Console.ReadLine().Trim();
+        }
+
+        return int.Parse(contactID);
+    }
+
+    internal static void GetUpdate(Contact contact)
+    {
+        foreach (PropertyInfo prop in contact.GetType().GetProperties())
+        {
+            Console.Clear();
+            var propName = prop.Name;
+            var propValue = prop.GetValue(contact);
+
+            if (propName == "Id")
+            {
+                continue;
+            }
+
+            Console.WriteLine($"{propName}: {propValue}\n\nupdate? press '1' to confirm, press '0' to make no changes");
+            var userInput = UserInput.GetUpdateChoice();
+
+            if (userInput == "0")
+            {
+                continue;
+            }
+
+            if (propName == "Name")
+            {
+                contact.Name = UserInput.GetName();
+            }
+            else if (propName == "Email")
+            {
+                contact.Email = UserInput.GetEmail();
+            }
+            else
+            {
+                contact.PhoneNumber = UserInput.GetPhoneNumber();
+            }
+        }
+    }
+
+    internal static string GetUpdateChoice()
+    {
+        var userChoice = Console.ReadLine().Trim();
+
+        while (userChoice != "0" && userChoice != "1")
+        {
+            Console.WriteLine("\ninvalid input, press '1' to confirm, press '0' to make no changes");
+            userChoice = Console.ReadLine().Trim();
+        }
+
+        return userChoice;
     }
 }

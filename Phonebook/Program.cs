@@ -23,6 +23,9 @@ internal class Program
                 case "2":
                     PhonebookManager.ReadContact();
                     break;
+                case "3":
+                    PhonebookManager.UpdateContact();
+                    break;
             }
         }
     }

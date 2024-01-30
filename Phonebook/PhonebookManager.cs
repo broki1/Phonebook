@@ -56,4 +56,21 @@ internal class PhonebookManager
         Console.ReadKey();
     }
 
+    internal static void UpdateContact()
+    {
+        VisualizationTool.PrintContacts(context.Contacts.ToList());
+
+        var contactID = UserInput.GetContactID();
+
+        var contact = context.Contacts.Where(x => x.Id == contactID).ToList();
+
+        VisualizationTool.PrintContacts(contact);
+
+        UserInput.GetUpdate(contact[0]);
+
+        context.SaveChanges();
+
+        Console.WriteLine("\ncontact updated\n\npress any key to continue");
+        Console.ReadKey();
+    }
 }

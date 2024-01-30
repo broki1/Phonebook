@@ -1,4 +1,5 @@
 ﻿
+using Phonebook.Data;
 using PhoneNumbers;
 using System.Globalization;
 using System.Net.Mail;
@@ -81,5 +82,26 @@ internal class ValidationEngine
         {
             return false;
         }
+    }
+
+    internal static bool ValidID(string idInput)
+    {
+        bool validId = true;
+
+        if (!int.TryParse(idInput, out _))
+        {
+            return false;
+        }
+
+        var context = new PhonebookContext();
+
+        var contacts = context.Contacts.Where(x => x.Id == int.Parse(idInput));
+
+        if (!contacts.Any())
+        {
+            validId = false;
+        }
+
+        return validId;
     }
 }
