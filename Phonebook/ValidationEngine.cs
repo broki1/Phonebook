@@ -19,6 +19,7 @@ internal class ValidationEngine
             case "2":
             case "3":
             case "4":
+            case "5":
                 valid = true; break;
             default:
                 break;

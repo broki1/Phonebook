@@ -29,6 +29,18 @@ internal class Program
                 case "4":
                     PhonebookManager.DeleteContact();
                     break;
+                case "5":
+                    Console.WriteLine("Enter email");
+                    var email = Console.ReadLine().Trim();
+
+                    Console.WriteLine("Enter subject");
+                    var subject = Console.ReadLine().Trim();
+
+                    Console.WriteLine("Enter body");
+                    var body = Console.ReadLine().Trim();
+
+                    EmailController.SendEmail(subject, body, email);
+                    break;
                 default:
                     Console.WriteLine("\ninvalid input");
                     break;
