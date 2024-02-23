@@ -7,26 +7,22 @@ namespace Phonebook;
 internal class EmailController
 {
 
-    internal static void SendEmail(string subject, string body, string toEmail)
+    internal static void SendEmail(MailMessage email)
     {
-
-        var fromEmail = new MailAddress(ConfigurationManager.AppSettings.Get("email"));
+        var fromEmail = ConfigurationManager.AppSettings.Get("email");
         var fromEmailPassword = ConfigurationManager.AppSettings.Get("emailPassword");
 
-
-        var email = new MailMessage();
-        email.From = fromEmail;
-        email.To.Add(toEmail);
-        email.Subject = subject;
-        email.Body = body;
-
+        // sets up the Smtp Client
         SmtpClient smtp = new SmtpClient();
         smtp.Host = "smtp.gmail.com";
         smtp.Port = 587;
+        // tells Smtp Client that specific credentials will be used
         smtp.UseDefaultCredentials = false;
-        smtp.EnableSsl = true;
 
-        smtp.Credentials = new NetworkCredential(fromEmail.ToString(), fromEmailPassword);
+        // required, email needs to be secure/encrypted
+        smtp.EnableSsl = true;
+        // fromEmail credentials set
+        smtp.Credentials = new NetworkCredential(fromEmail, fromEmailPassword);
 
         try
         {

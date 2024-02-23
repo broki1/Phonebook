@@ -1,6 +1,8 @@
 ﻿using Phonebook.Model;
 using PhoneNumbers;
+using System.Configuration;
 using System.Globalization;
+using System.Net.Mail;
 using System.Reflection;
 
 namespace Phonebook;
@@ -157,5 +159,22 @@ internal class UserInput
         }
 
         return userChoice;
+    }
+
+    internal static MailMessage CreateEmail(string emailAddress)
+    {
+        var fromEmail = new MailAddress(ConfigurationManager.AppSettings.Get("email"));
+
+        var email = new MailMessage();
+        email.From = fromEmail;
+        email.To.Add(emailAddress);
+
+        Console.WriteLine("enter email subject:");
+        email.Subject = Console.ReadLine().Trim();
+
+        Console.WriteLine("enter email body");
+        email.Body = Console.ReadLine().Trim();
+
+        return email;
     }
 }

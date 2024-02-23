@@ -1,4 +1,5 @@
-﻿using Phonebook.Data;
+﻿using Microsoft.IdentityModel.Tokens;
+using Phonebook.Data;
 using Phonebook.Model;
 
 namespace Phonebook;
@@ -36,24 +37,68 @@ internal class PhonebookManager
         Console.ReadKey();
     }
 
-    internal static void ReadContact()
+    internal static Contact? ReadContact()
     {
-        var input = UserInput.GetReadInput();
+        bool contactFound = false;
+        Contact contact = null;
 
-        var contacts = context.Contacts.Where(x => x.Name.Contains(input) ||  x.Email.Contains(input) || x.PhoneNumber.Contains(input))
-            .ToList();
-
-        if (contacts == null || contacts.Count == 0)
+        while (!contactFound)
         {
-            Console.WriteLine("\nno contacts found");
-        }
-        else
-        {
-            VisualizationTool.PrintContacts(contacts);
+            var input = UserInput.GetReadInput();
+
+            var contacts = context.Contacts.Where(x => x.Name.Contains(input) || x.Email.Contains(input) || x.PhoneNumber.Contains(input))
+                .ToList();
+
+            if (input.ToLower().Equals("exit"))
+            {
+                contact = null;
+                contactFound = true;
+            }
+            else if (contacts == null || contacts.Count == 0)
+            {
+                Console.WriteLine("\nno contacts found");
+                Console.WriteLine("\npress any key to continue");
+                Console.ReadKey();
+            }
+            else
+            {
+                VisualizationTool.PrintContacts(contacts);
+                Console.WriteLine("\nenter ID of contact to email, or press enter to return to main menu:");
+                var contactId = Console.ReadLine().Trim();
+
+                if (contactId.IsNullOrEmpty())
+                {
+                    contact = null;
+                    contactFound = true;
+                    continue;
+                }
+
+                while (!ValidationEngine.ValidID(contactId))
+                {
+                    Console.WriteLine("\ninvalid input, please enter ID of contact:");
+                    contactId = Console.ReadLine().Trim();
+                }
+
+                contact = context.Contacts.Where(x => x.Id == Int32.Parse(contactId)).ToList()[0];
+
+                contactFound = true;
+
+                Console.WriteLine("\npress 'e' to email contact, or any other key to continue");
+                var choice = Console.ReadLine();
+
+                if (!choice.IsNullOrEmpty())
+                {
+                    if (choice == "e")
+                    {
+                        var email = UserInput.CreateEmail(contact.Email);
+
+                        EmailController.SendEmail(email);
+                    }
+                }
+            }
         }
 
-        Console.WriteLine("\npress any key to continue");
-        Console.ReadKey();
+        return contact;
     }
 
     internal static void UpdateContact()
